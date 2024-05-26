@@ -1,1 +1,0 @@
-Open NetBeans or IntelliJ to import Sources project for studying
