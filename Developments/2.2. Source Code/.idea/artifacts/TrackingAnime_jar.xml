@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TrackingAnime:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TrackingAnime_jar</output-path>
+    <root id="archive" name="TrackingAnime.jar">
+      <element id="module-output" name="TrackingAnime" />
+      <element id="extracted-dir" path="C:/Program Files/Java/sqljdbc_12.6.0.0_enu/sqljdbc_12.6/enu/jars/mssql-jdbc-12.6.0.jre11.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
