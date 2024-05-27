@@ -45,11 +45,7 @@ public class CardScheduleController implements Initializable {
     PreparedStatement st;
     ResultSet rs;
     public Alert alert;
-<<<<<<< HEAD
     public Integer[] day = {1,2,3,4,5,6,7};
-=======
-    public Integer[] day = {2,3,4,5,6,7,8};
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
 
     public CardScheduleController(){
         cnn = DBConnect.makeConnection();
@@ -127,7 +123,6 @@ public class CardScheduleController implements Initializable {
         ObservableList listDay = FXCollections.observableArrayList(dayList);
         cs_cbDay.setItems(listDay);
         Map<Integer, String> itemDay = new HashMap<>();
-<<<<<<< HEAD
         itemDay.put(1, "Monday");
         itemDay.put(2, "Tuesday");
         itemDay.put(3, "Wednesday");
@@ -135,15 +130,6 @@ public class CardScheduleController implements Initializable {
         itemDay.put(5, "Friday");
         itemDay.put(6, "Saturday");
         itemDay.put(7, "Sunday");
-=======
-        itemDay.put(2, "Monday");
-        itemDay.put(3, "Tuesday");
-        itemDay.put(4, "Wednesday");
-        itemDay.put(5, "Thursday");
-        itemDay.put(6, "Friday");
-        itemDay.put(7, "Saturday");
-        itemDay.put(8, "Sunday");
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
         cs_cbDay.setConverter(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {

@@ -20,11 +20,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-<<<<<<< HEAD
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-=======
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -299,11 +296,7 @@ public class FormController implements Initializable {
             alert.showAndWait();
         }
         else{
-<<<<<<< HEAD
             String query = "insert into Account(username,password,email,nickname,last_open) values(?,?,?,?,?)";
-=======
-            String query = "insert into Account(username,password,email,nickname) values(?,?,?,?)";
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
             try {
                 String checkUsername = "select Username from Account where Username = '" + su_usernameTxt.getText() + "'";
                 st = cnn.prepareStatement(checkUsername);
@@ -360,12 +353,9 @@ public class FormController implements Initializable {
                         st.setString(2, su_passwordTxt.getText());
                         st.setString(3, su_emailTxt.getText());
                         st.setString(4, su_usernameTxt.getText());
-<<<<<<< HEAD
                         LocalDateTime currentTime = LocalDateTime.now();
                         Timestamp timestamp = Timestamp.valueOf(currentTime);
                         st.setTimestamp(5, timestamp);
-=======
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
                         st.executeUpdate();
 
 

@@ -41,11 +41,7 @@ public class CardLastUpdateController implements Initializable {
     // Method
     public void setData(Information info){
         this.info = info;
-<<<<<<< HEAD
         double progress = (double) info.getNewepisode() / info.getEpisodes();
-=======
-        double progress = (double) info.getEpisodes() / info.getNewepisode();
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
         cardH_imageView.setImage(info.getPoster());
         cardH_imageView.setFitWidth(110);
         cardH_imageView.setFitHeight(100);
@@ -53,11 +49,7 @@ public class CardLastUpdateController implements Initializable {
         cardH_imageView.setSmooth(true);
 
         cardH_Name.setText(info.getTitle());
-<<<<<<< HEAD
         cardH_Watching.setText(info.getNewepisode() + "/" + info.getEpisodes());
-=======
-        cardH_Watching.setText(info.getEpisodes() + "/" + info.getNewepisode());
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
         cardH_Score.setText(String.valueOf(info.getScore()));
         cardH_Date.setText(info.getDate());
         if(info.getEpisodes() == 0){

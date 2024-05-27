@@ -237,11 +237,7 @@ public class AdministratorController implements Initializable {
     public Integer[] type ={1,2,3};
     public Integer[] season = {1,2,3,4};
     public Integer[] nation = {1,2,3};
-<<<<<<< HEAD
     public Integer[] day = {1,2,3,4,5,6,7};
-=======
-    public Integer[] day = {2,3,4,5,6,7,8};
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
     String query;
     int studioid;
 
@@ -335,6 +331,9 @@ public class AdministratorController implements Initializable {
                     else if(item == 2){
                         setText("Movies");
                     }
+                    else if(item == 3){
+                        setText("OVA");
+                    }
                 }
             };
         });
@@ -420,12 +419,22 @@ public class AdministratorController implements Initializable {
                             st.setInt(1, offset);
                             rs = st.executeQuery();
                             while (rs.next()) {
-                                URL fxmlLocation = getClass().getResource("/Views/Dialog/cardSchedule.fxml");
-                                Parent root = FXMLLoader.load(fxmlLocation);
-                                stage.setTitle("Schedule");
-                                Scene scene = new Scene(root);
-                                stage.setScene(scene);
-                                stage.show();
+                                int status = rs.getInt("status");
+                                if(status == 1){
+                                    URL fxmlLocation = getClass().getResource("/Views/Dialog/cardSchedule.fxml");
+                                    Parent root = FXMLLoader.load(fxmlLocation);
+                                    stage.setTitle("Schedule");
+                                    Scene scene = new Scene(root);
+                                    stage.setScene(scene);
+                                    stage.show();
+                                }
+                                else{
+                                    alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("Error Message");
+                                    alert.setHeaderText("");
+                                    alert.setContentText("Only airing statuses are added to the calendar");
+                                    alert.showAndWait();
+                                }
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -488,19 +497,27 @@ public class AdministratorController implements Initializable {
                 int selectedStatus = status[selectedIndex];
                 switch (selectedStatus) {
                     case 1:
+                        db_txtNewepisode.setDisable(false);
+                        db_txtEpisode.setDisable(false);
                         break;
                     case 2:
+                        db_txtNewepisode.setDisable(false);
+                        db_txtEpisode.setDisable(false);
                         break;
                     case 3:
-                        db_txtNewepisode.setText("NULL");
+                        db_txtNewepisode.setText("0");
+                        db_txtNewepisode.setDisable(true);
                         break;
                     case 4:
+                        db_txtEpisode.setText("0");
+                        db_txtNewepisode.setText("0");
+                        db_txtNewepisode.setDisable(true);
+                        db_txtEpisode.setDisable(true);
+
                         break;
                 }
 
 
-            } else {
-                System.out.println("Nothing to display");
             }
         });
 
@@ -531,6 +548,35 @@ public class AdministratorController implements Initializable {
                     }
                 }
                 return null;
+            }
+        });
+        db_cbType.setOnAction(event -> {
+            int selectedIndex = db_cbType.getSelectionModel().getSelectedIndex();
+            if(selectedIndex >= 0 && selectedIndex < type.length){
+                int selectedStatus = type[selectedIndex];
+                switch (selectedStatus) {
+                    case 1:
+                        db_cbStatus.setDisable(false);
+                        db_txtNewepisode.setDisable(false);
+                        db_txtEpisode.setDisable(false);
+                        break;
+                    case 2:
+                        db_txtNewepisode.setText("1");
+                        db_txtEpisode.setText("1");
+                        db_cbStatus.setValue(2);
+                        db_cbStatus.setDisable(true);
+                        db_txtNewepisode.setDisable(true);
+                        db_txtEpisode.setDisable(true);
+                        break;
+                    case 3:
+                        db_cbStatus.setDisable(false);
+                        db_txtNewepisode.setDisable(false);
+                        db_txtEpisode.setDisable(false);
+                        break;
+
+                }
+
+
             }
         });
 
@@ -600,7 +646,6 @@ public class AdministratorController implements Initializable {
         ObservableList listDay = FXCollections.observableArrayList(dayList);
         sc_cbDay.setItems(listDay);
         Map<Integer, String> itemDay = new HashMap<>();
-<<<<<<< HEAD
         itemDay.put(1, "Monday");
         itemDay.put(2, "Tuesday");
         itemDay.put(3, "Wednesday");
@@ -608,15 +653,6 @@ public class AdministratorController implements Initializable {
         itemDay.put(5, "Friday");
         itemDay.put(6, "Saturday");
         itemDay.put(7, "Sunday");
-=======
-        itemDay.put(2, "Monday");
-        itemDay.put(3, "Tuesday");
-        itemDay.put(4, "Wednesday");
-        itemDay.put(5, "Thursday");
-        itemDay.put(6, "Friday");
-        itemDay.put(7, "Saturday");
-        itemDay.put(8, "Sunday");
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
         sc_cbDay.setConverter(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {
@@ -643,7 +679,6 @@ public class AdministratorController implements Initializable {
         ObservableList listDay = FXCollections.observableArrayList(dayList);
         sc_cbFilterDay.setItems(listDay);
         Map<Integer, String> itemDay = new HashMap<>();
-<<<<<<< HEAD
         itemDay.put(1, "Monday");
         itemDay.put(2, "Tuesday");
         itemDay.put(3, "Wednesday");
@@ -651,15 +686,6 @@ public class AdministratorController implements Initializable {
         itemDay.put(5, "Friday");
         itemDay.put(6, "Saturday");
         itemDay.put(7, "Sunday");
-=======
-        itemDay.put(2, "Monday");
-        itemDay.put(3, "Tuesday");
-        itemDay.put(4, "Wednesday");
-        itemDay.put(5, "Thursday");
-        itemDay.put(6, "Friday");
-        itemDay.put(7, "Saturday");
-        itemDay.put(8, "Sunday");
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
         sc_cbFilterDay.setConverter(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {
@@ -808,6 +834,7 @@ public class AdministratorController implements Initializable {
             alert.showAndWait();
         }
         else{
+            int selectedStatus = db_cbStatus.getSelectionModel().getSelectedItem();
             if(db_txtIntroduction.getText().length() < 20){
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
@@ -815,20 +842,23 @@ public class AdministratorController implements Initializable {
                 alert.setContentText("Introduction cannot under 20 characters");
                 alert.showAndWait();
             }
-            else if(Integer.valueOf(db_txtNewepisode.getText()) > Integer.valueOf(db_txtEpisode.getText())){
+            if(selectedStatus == 1 && Integer.valueOf(db_txtNewepisode.getText()) > Integer.valueOf(db_txtEpisode.getText())){
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
                 alert.setHeaderText("");
                 alert.setContentText("Newepisode cannot above Episodes");
                 alert.showAndWait();
             }
+            else if (selectedStatus == 4 && db_dpAried.getValue().isBefore(LocalDate.now())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("The selected date must be greater than the current date");
+                alert.showAndWait();
+            }
             else {
                 String checkTitleQuery = "SELECT title FROM Anime WHERE title = '" + db_txtTitle.getText() + "'";
-<<<<<<< HEAD
                 String insertData = "INSERT INTO Anime (account_id, title, poster, status, aried, episodes, new_episode, studio_id, type, introduction, season, nation)" +
-=======
-                String insertData = "INSERT INTO Anime (account_id, title, poster, status, aried, episodes, new_episode, studio, type, introduction, season, nation)" +
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
                         "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
                 try {
                     st = cnn.prepareStatement(checkTitleQuery);
@@ -845,7 +875,7 @@ public class AdministratorController implements Initializable {
                         st.setInt(1, data.accountid);
                         st.setString(2, db_txtTitle.getText());
                         st.setString(3, db_txtPoster.getText());
-                        st.setString(4, db_cbSeason.getSelectionModel().getSelectedItem().toString());
+                        st.setString(4, db_cbStatus.getSelectionModel().getSelectedItem().toString());
                         LocalDate selectedDate = db_dpAried.getValue();
                         String formattedDate = selectedDate.toString();
                         st.setString(5, formattedDate);
@@ -881,6 +911,7 @@ public class AdministratorController implements Initializable {
         }
     }
     public void updatebtn(){
+
         if(db_txtPoster.getText().isEmpty() || db_txtTitle.getText().isEmpty() ||
                 db_cbSeason.getSelectionModel().getSelectedItem() == null || db_cbType.getSelectionModel().getSelectedItem() == null
                 || db_cbStatus.getSelectionModel().getSelectedItem() == null || db_dpAried.getValue() == null
@@ -891,59 +922,80 @@ public class AdministratorController implements Initializable {
             alert.setHeaderText("");
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
-        }else{
-            LocalDate selectedDate = db_dpAried.getValue();
-            String formattedDate = selectedDate.toString();
-            String updateData= "update Anime set poster= '" + db_txtPoster.getText() + "' ,title= '" + db_txtTitle.getText() + "' ,type= '"+
-                    db_cbType.getSelectionModel().getSelectedItem().toString() + "' ,status= '"
-                    +db_cbStatus.getSelectionModel().getSelectedItem().toString() + "' ,aried= '"
-                    +  formattedDate + "' ,season ='" + db_cbSeason.getSelectionModel().getSelectedItem().toString() +
-                    "' ,episodes= '" + db_txtEpisode.getText() + "' ,introduction= '" + db_txtIntroduction.getText() + "' ,Nation= '"
-                    + db_cbNation.getSelectionModel().getSelectedItem().toString() + "' , new_episode= '" + db_txtNewepisode.getText() + "', studio_id = '" +
-                    db_cbStudio.getSelectionModel().getSelectedItem() + "' where anime_id= '" + data.id + "'";
-            try {
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
+        }
+
+        else {
+            int selectedStatus = db_cbStatus.getSelectionModel().getSelectedItem();
+            if(selectedStatus == 1 && Integer.valueOf(db_txtNewepisode.getText()) > Integer.valueOf(db_txtEpisode.getText())){
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText("");
+                alert.setContentText("Newepisode cannot above Episodes");
+                alert.showAndWait();
+            }
+            else if (selectedStatus == 4 && db_dpAried.getValue().isBefore(LocalDate.now())) {
+                alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
-                alert.setContentText("Are you sure want to update ?");
-                Optional<ButtonType> option = alert.showAndWait();
-                if(option.get().equals(ButtonType.OK)){
-                    st = cnn.prepareStatement(updateData);
-                    st.executeUpdate();
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Successfully Updated!");
-                    alert.showAndWait();
-                    dashboardShowcase();
-                    clearbtn();
-                }else{
-                    alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("The selected date must be greater than the current date");
+                alert.showAndWait();
+            }
+            else {
+
+                LocalDate selectedDate = db_dpAried.getValue();
+                String formattedDate = selectedDate.toString();
+                String updateData = "update Anime set poster= '" + db_txtPoster.getText() + "' ,title= '" + db_txtTitle.getText() + "' ,type= '" +
+                        db_cbType.getSelectionModel().getSelectedItem().toString() + "' ,status= '"
+                        + db_cbStatus.getSelectionModel().getSelectedItem().toString() + "' ,aried= '"
+                        + formattedDate + "' ,season ='" + db_cbSeason.getSelectionModel().getSelectedItem().toString() +
+                        "' ,episodes= '" + db_txtEpisode.getText() + "' ,introduction= '" + db_txtIntroduction.getText() + "' ,Nation= '"
+                        + db_cbNation.getSelectionModel().getSelectedItem().toString() + "' , new_episode= '" + db_txtNewepisode.getText() + "', studio_id = '" +
+                        db_cbStudio.getSelectionModel().getSelectedItem() + "' where anime_id= '" + data.id + "'";
+                try {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Error Message");
                     alert.setHeaderText(null);
-                    alert.setContentText("Cancelled");
-                    alert.showAndWait();
+                    alert.setContentText("Are you sure want to update ?");
+                    Optional<ButtonType> option = alert.showAndWait();
+                    if (option.get().equals(ButtonType.OK)) {
+                        st = cnn.prepareStatement(updateData);
+                        st.executeUpdate();
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Information Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Successfully Updated!");
+                        alert.showAndWait();
+                        dashboardShowcase();
+                        clearbtn();
+                    } else {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Cancelled");
+                        alert.showAndWait();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }catch (Exception e){
-                e.printStackTrace();
             }
         }
     }
     public void deletebtn(){
-        int animeid = db_tbvDatabase.getSelectionModel().getSelectedIndex();
-        int offset = animeid + 1;
-        if(animeid != -1){
+        Database selectedAnime = db_tbvDatabase.getSelectionModel().getSelectedItem();
+        if(selectedAnime != null){
+            int animeId = selectedAnime.getAnimeid();
             alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Are you sure you want to delete ?");
             Optional<ButtonType> option = alert.showAndWait();
             if (option.get().equals(ButtonType.OK)) {
-                String deleteAnime = "DELETE FROM Anime WHERE anime_id = '" + offset + "'";
-                String deleteNotifications = "DELETE FROM Notification WHERE ref_anime_id = '" + offset + "'";
-                String deleteTrackingAnime = "DELETE FROM TrackingAnime WHERE anime_id = '" + offset + "'";
-                String deleteSchedule = "DELETE FROM Schedule WHERE anime_id = '" + offset + "'";
-                String deleteGenreWithAnime = "DELETE FROM GenreWithAnime WHERE anime_id = '" + offset + "'";
+                String deleteAnime = "DELETE FROM Anime WHERE anime_id = '" + animeId + "'";
+                String deleteNotifications = "DELETE FROM Notification WHERE ref_anime_id = '" + animeId + "'";
+                String deleteTrackingAnime = "DELETE FROM TrackingAnime WHERE anime_id = '" + animeId + "'";
+                String deleteSchedule = "DELETE FROM Schedule WHERE anime_id = '" + animeId + "'";
+                String deleteGenreWithAnime = "DELETE FROM GenreWithAnime WHERE anime_id = '" + animeId + "'";
                 try {
                     st = cnn.prepareStatement(deleteNotifications);
                     st.executeUpdate();
@@ -1028,6 +1080,7 @@ public class AdministratorController implements Initializable {
                 }else{
                     db_dpAried.setValue(rs.getDate("aried").toLocalDate());
                 }
+
                 db_txtEpisode.setText(String.valueOf(rs.getInt("episodes")));
                 db_txtNewepisode.setText(String.valueOf(rs.getInt("new_episode")));
                 db_cbNation.setValue(rs.getInt("nation"));
@@ -1036,6 +1089,18 @@ public class AdministratorController implements Initializable {
                 db_cbType.setValue(rs.getInt("type"));
                 db_cbStudio.setValue(rs.getInt("studio_id"));
                 db_txtIntroduction.setText(rs.getString("introduction"));
+            }
+            if(db_cbStatus.getSelectionModel().getSelectedItem() == 1){
+                db_txtNewepisode.setDisable(false);
+                db_txtEpisode.setDisable(false);
+            }
+            else if(db_cbStatus.getSelectionModel().getSelectedItem() == 3){
+                db_txtEpisode.setDisable(false);
+                db_txtNewepisode.setDisable(true);
+            }
+            else if(db_cbStatus.getSelectionModel().getSelectedItem() == 4){
+                db_txtNewepisode.setDisable(true);
+                db_txtEpisode.setDisable(true);
             }
             db_btnUpdate.setDisable(false);
             db_btnDelete.setDisable(false);
@@ -1065,10 +1130,7 @@ public class AdministratorController implements Initializable {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                 String formattedTime = time.format(formatter);
                 sc_txtTime.setText(formattedTime);
-<<<<<<< HEAD
                 sc_cbDay.setValue(rs.getInt("day"));
-=======
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
             }
             sc_btnUpdate.setDisable(false);
             sc_btnDelete.setDisable(false);
@@ -1256,7 +1318,6 @@ public class AdministratorController implements Initializable {
                     if(empty || item == null){
                         setText(null);
                     }
-<<<<<<< HEAD
                     else if(item == 1){
                         setText("Monday");
                     }
@@ -1276,27 +1337,6 @@ public class AdministratorController implements Initializable {
                         setText("Saturday");
                     }
                     else if(item == 7){
-=======
-                    else if(item == 2){
-                        setText("Monday");
-                    }
-                    else if(item == 3){
-                        setText("Tuesday");
-                    }
-                    else if(item == 4){
-                        setText("Wednesday");
-                    }
-                    else if(item == 5){
-                        setText("Thursday");
-                    }
-                    else if(item == 6){
-                        setText("Friday");
-                    }
-                    else if(item == 7){
-                        setText("Saturday");
-                    }
-                    else if(item == 8){
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
                         setText("Sunday");
                     }
                 }

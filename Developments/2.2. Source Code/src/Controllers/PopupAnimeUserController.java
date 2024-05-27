@@ -179,11 +179,7 @@ public class PopupAnimeUserController implements Initializable {
                                 "INNER JOIN TrackingAnime TA ON TL.tl_id = TA.tl_id where TL.account_id= ? AND TA.anime_id= ?";
                         st = cnn.prepareStatement(selected);
                         st.setInt(1, data.accountid);
-<<<<<<< HEAD
                         st.setInt(2, data.id);
-=======
-                        st.setInt(2, animeid);
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
                         rs = st.executeQuery();
                         if (rs.next()) {
                             pu_btnAddMyList.setVisible(false);
@@ -382,10 +378,7 @@ public class PopupAnimeUserController implements Initializable {
                         case 10:
                             st = cnn.prepareStatement(updateScore);
                             st.executeUpdate();
-<<<<<<< HEAD
                             displaydetails();
-=======
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
                             break;
                     }
 
@@ -463,11 +456,7 @@ public class PopupAnimeUserController implements Initializable {
     }
     ObservableList<String> trackingListNames = FXCollections.observableArrayList();
     public void optTrackingList(){
-<<<<<<< HEAD
         String query = "SELECT * FROM TrackingList where account_id= '" + data.accountid + "'";
-=======
-        String query = "SELECT * FROM TrackingList ";
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
 
         try {
             st = cnn.prepareStatement(query);
@@ -514,10 +503,7 @@ public class PopupAnimeUserController implements Initializable {
                 "SELECT tl.tl_id, ?, ?, ?\n" +
                 "FROM TrackingList tl\n" +
                 "WHERE tl.tl_name = ?";
-<<<<<<< HEAD
         String deleteAnimeNotification = "DELETE FROM Notification WHERE ref_tl_id= ? AND ref_anime_id= ?";
-=======
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
         String deleteAnimeQuery = "DELETE FROM TrackingAnime WHERE tl_id = ? AND anime_id = ?";
         try {
             st = cnn.prepareStatement(insertAnimeQuery);
@@ -539,14 +525,11 @@ public class PopupAnimeUserController implements Initializable {
             st.setString(1, newTlName);
             st.executeUpdate();
 
-<<<<<<< HEAD
             st = cnn.prepareStatement(deleteAnimeNotification);
             st.setInt(1, data.tlid);
             st.setInt(2, data.id);
             st.executeUpdate();
 
-=======
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
             st = cnn.prepareStatement(deleteAnimeQuery);
             st.setInt(1, data.tlid);
             st.setInt(2, data.id);
@@ -590,7 +573,6 @@ public class PopupAnimeUserController implements Initializable {
                     if(empty || item == null){
                         setText(null);
                     }
-<<<<<<< HEAD
                     else if(item == 1){
                         setText("Monday");
                     }
@@ -610,27 +592,6 @@ public class PopupAnimeUserController implements Initializable {
                         setText("Saturday");
                     }
                     else if(item == 7){
-=======
-                    else if(item == 2){
-                        setText("Monday");
-                    }
-                    else if(item == 3){
-                        setText("Tuesday");
-                    }
-                    else if(item == 4){
-                        setText("Wednesday");
-                    }
-                    else if(item == 5){
-                        setText("Thursday");
-                    }
-                    else if(item == 6){
-                        setText("Friday");
-                    }
-                    else if(item == 7){
-                        setText("Saturday");
-                    }
-                    else if(item == 8){
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
                         setText("Sunday");
                     }
                 }

@@ -14,8 +14,5 @@ public class data {
     public static String poster;
     public static int scheduleid;
     public static int studioid;
-<<<<<<< HEAD
     public static int reftlid;
-=======
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
 }

@@ -256,7 +256,6 @@ public class PopupAnimeAdminController implements Initializable {
                     if(empty || item == null){
                         setText(null);
                     }
-<<<<<<< HEAD
                     else if(item == 1){
                         setText("Monday");
                     }
@@ -276,27 +275,6 @@ public class PopupAnimeAdminController implements Initializable {
                         setText("Saturday");
                     }
                     else if(item == 7){
-=======
-                    else if(item == 2){
-                        setText("Monday");
-                    }
-                    else if(item == 3){
-                        setText("Tuesday");
-                    }
-                    else if(item == 4){
-                        setText("Wednesday");
-                    }
-                    else if(item == 5){
-                        setText("Thursday");
-                    }
-                    else if(item == 6){
-                        setText("Friday");
-                    }
-                    else if(item == 7){
-                        setText("Saturday");
-                    }
-                    else if(item == 8){
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
                         setText("Sunday");
                     }
                 }

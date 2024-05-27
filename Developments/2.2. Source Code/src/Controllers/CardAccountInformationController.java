@@ -51,19 +51,14 @@ public class CardAccountInformationController implements Initializable {
         cnn = DBConnect.makeConnection();
     }
 
-    public void setAccountInformation(String password) {
-        ca_txtPassword.setText(password);
-        ca_txtConfirmPassword.setText(password);
-    }
+            public void proceedBtn(){
+                String oldPassword = ca_txtOldPassword.getText();
+                String newPassword = ca_txtPassword.getText();
+                String newConfirmPassword = ca_txtPassword.getText();
 
-    public void proceedBtn(){
-        String oldPassword = ca_txtOldPassword.getText();
-        String newPassword = ca_txtPassword.getText();
-        String newConfirmPassword = ca_txtPassword.getText();
-
-        String query = "Select * from Account where account_id = '" + data.accountid + "'";
-        try {
-            st = cnn.prepareStatement(query);
+                String query = "Select * from Account where account_id = '" + data.accountid + "'";
+                try {
+                    st = cnn.prepareStatement(query);
             rs = st.executeQuery();
             if (rs.next()) {
                 originalPassword = rs.getString("password");

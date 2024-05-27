@@ -26,26 +26,15 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.URL;
-<<<<<<< HEAD
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-=======
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-<<<<<<< HEAD
 import java.util.Date;
-=======
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
 import java.util.regex.Pattern;
 
 public class UserController implements Initializable {
@@ -196,11 +185,7 @@ public class UserController implements Initializable {
     public int second;
     public Image image;
     StringBuilder ID = new StringBuilder();
-<<<<<<< HEAD
     public int animeid,tlid;
-=======
-    public int animeid;
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
     private String tlName;
     // Constructor
     public UserController() {
@@ -472,7 +457,6 @@ public class UserController implements Initializable {
     // Notification
     public ObservableList<Notification> getNotificationData(){
         ObservableList<Notification> listData = FXCollections.observableArrayList();
-<<<<<<< HEAD
         String queryLastopen = "Select * from Account where account_id = '" + data.accountid + "'";
         try {
             st = cnn.prepareStatement(queryLastopen);
@@ -558,29 +542,6 @@ public class UserController implements Initializable {
             }
         return listData;
 
-=======
-        String query = " Select N.id,Acc.account_id,TL.tl_id,A.anime_id,A.poster,A.title,TA.status,N.time from Notification N " +
-                "JOIN TrackingAnime TA ON N.ref_tl_id = TA.tl_id AND N.ref_anime_id = TA.anime_id " +
-                "JOIN TrackingList TL ON TA.tl_id = TL.tl_id " + "JOIN Anime A ON TA.anime_id = A.anime_id " +
-                "JOIN Account Acc ON TL.account_id = Acc.account_id;";
-        try{
-            st = cnn.prepareStatement(query);
-            rs = st.executeQuery();
-            Notification notify;
-            while(rs.next()){
-                String imagePath = rs.getString("poster");
-                Image image = new Image(imagePath, 60, 60, false, true);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                String formattedDate = dateFormat.format(rs.getDate("time"));
-                notify = new Notification(rs.getInt("tl_id"),rs.getString("title"),
-                        image,rs.getInt("status"),formattedDate);
-                listData.add(notify);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return listData;
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
     }
 
 
@@ -739,15 +700,9 @@ public class UserController implements Initializable {
     }
 
     public void displayNotice(){
-<<<<<<< HEAD
         String sum= "SELECT N.ref_tl_id, COUNT(*) AS total_notifications\n" +
                 "FROM Notification N INNER JOIN TrackingAnime TA ON TA.tl_id = N.ref_tl_id INNER JOIN  Anime An ON An.anime_id = TA.anime_id INNER JOIN  Account A ON A.account_id = An.account_id\n" +
                 "where A.account_id= '" + data.accountid + "' GROUP BY ref_tl_id ";
-=======
-        String sum= "SELECT ref_tl_id, COUNT(*) AS total_notifications\n" +
-                "FROM Notification\n" +
-                "GROUP BY ref_tl_id;\n";
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
         try {
             st = cnn.prepareStatement(sum);
             rs = st.executeQuery();
@@ -832,7 +787,6 @@ public class UserController implements Initializable {
                                 Stage stage = new Stage();
                                 while (rs.next()){
                                     animeid = rs.getInt("anime_id");
-<<<<<<< HEAD
                                 }
                                 data.id = animeid;
                                 String checkTLID = "Select tl.* From TrackingList tl INNER JOIN TrackingAnime ta ON ta.tl_id = tl.tl_id" +
@@ -844,11 +798,6 @@ public class UserController implements Initializable {
                                 }
                                 data.tlid = tlid;
 
-=======
-
-                                }
-                                data.id = animeid;
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
                                 String query = "Select * from anime where anime_id=?";
                                 st = cnn.prepareStatement(query);
                                 st.setInt(1, animeid);
@@ -904,11 +853,7 @@ public class UserController implements Initializable {
     }
 
     public void addTrackingListBtn(){
-<<<<<<< HEAD
         String query = "Select * from Account where account_id = '" + data.accountid + "'";
-=======
-        String query = "Select * from TrackingList where account_id = '" + data.accountid + "'";
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
         try {
             st = cnn.prepareStatement(query);
             rs = st.executeQuery();
@@ -1056,7 +1001,6 @@ public class UserController implements Initializable {
                 Parent root = loader.load();
                 CardAccountInformationController cardA = loader.getController();
                 String password = rs.getString("password");
-                cardA.setAccountInformation(password);
                 stage.setTitle("Account Information");
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
@@ -1202,10 +1146,7 @@ public class UserController implements Initializable {
                             animeForm.setVisible(true);
                             animeListForm.setVisible(false);
                             notificationForm.setVisible(false);
-<<<<<<< HEAD
                             profileForm.setVisible(false);
-=======
->>>>>>> b550c251204b4cd80132e39612f5820a3034bdaa
                         }catch (Exception e){
                             e.printStackTrace();
                         }
