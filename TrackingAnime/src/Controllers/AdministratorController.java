@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Date;
 
@@ -835,6 +836,7 @@ public class AdministratorController implements Initializable {
         }
         else{
             int selectedStatus = db_cbStatus.getSelectionModel().getSelectedItem();
+            int selectedType = db_cbType.getSelectionModel().getSelectedItem();
             if(db_txtIntroduction.getText().length() < 20){
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
@@ -842,7 +844,7 @@ public class AdministratorController implements Initializable {
                 alert.setContentText("Introduction cannot under 20 characters");
                 alert.showAndWait();
             }
-            if(selectedStatus == 1 && Integer.valueOf(db_txtNewepisode.getText()) > Integer.valueOf(db_txtEpisode.getText())){
+            else if(selectedStatus == 1 && Integer.valueOf(db_txtNewepisode.getText()) > Integer.valueOf(db_txtEpisode.getText())){
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
                 alert.setHeaderText("");
@@ -854,6 +856,13 @@ public class AdministratorController implements Initializable {
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
                 alert.setContentText("The selected date must be greater than the current date");
+                alert.showAndWait();
+            }
+            else if(selectedStatus == 2 && selectedType == 1 && db_dpAried.getValue().isAfter(LocalDate.now().minus(1, ChronoUnit.YEARS))){
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("The end date must be at least one year in advance");
                 alert.showAndWait();
             }
             else {
@@ -926,6 +935,7 @@ public class AdministratorController implements Initializable {
 
         else {
             int selectedStatus = db_cbStatus.getSelectionModel().getSelectedItem();
+            int selectedType = db_cbType.getSelectionModel().getSelectedItem();
             if(selectedStatus == 1 && Integer.valueOf(db_txtNewepisode.getText()) > Integer.valueOf(db_txtEpisode.getText())){
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
@@ -938,6 +948,13 @@ public class AdministratorController implements Initializable {
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
                 alert.setContentText("The selected date must be greater than the current date");
+                alert.showAndWait();
+            }
+            else if(selectedStatus == 2 && selectedType == 1 && db_dpAried.getValue().isAfter(LocalDate.now().minus(1, ChronoUnit.YEARS))){
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("The end date must be at least one year in advance");
                 alert.showAndWait();
             }
             else {
@@ -1152,48 +1169,60 @@ public class AdministratorController implements Initializable {
             alert.showAndWait();
         }else{
             try {
+                String selected = "SELECT * FROM Schedule WHERE day = '" + sc_cbDay.getSelectionModel().getSelectedItem() + "' and anime_id= '" + sc_txtAnimeID.getText() + "'" ;
+                    st = cnn.prepareStatement(selected);
+                    rs = st.executeQuery();
+                    if(rs.next()) {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Message");
+                        alert.setHeaderText("");
+                        alert.setContentText("This day of anime already exists in the database");
+                        alert.showAndWait();
+                    }
+                    else{
+                        String updateData= "update Schedule set anime_id= '" + sc_txtAnimeID.getText() + "' , day= '" +
+                                sc_cbDay.getSelectionModel().getSelectedItem().toString() + "', time= '" + sc_txtTime.getText() + "'" +
+                                " where schedule_id= '" + data.scheduleid + "'";
+                        alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Error Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Are you sure want to update ?");
+                        Optional<ButtonType> option = alert.showAndWait();
+                        if(option.get().equals(ButtonType.OK)){
+                            st = cnn.prepareStatement(updateData);
+                            st.executeUpdate();
+                            alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Information Message");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Successfully Updated!");
+                            alert.showAndWait();
+                            scheduleShowcase(query);
+                            clearschedulebtn();
+                        }else{
+                            alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error Message");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Cancelled");
+                            alert.showAndWait();
+                        }
+                    }
 
-            String updateData= "update Schedule set anime_id= '" + sc_txtAnimeID.getText() + "' , day= '" +
-                    sc_cbDay.getSelectionModel().getSelectedItem().toString() + "', time= '" + sc_txtTime.getText() + "'" +
-                    " where schedule_id= '" + data.scheduleid + "'";
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Error Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure want to update ?");
-                Optional<ButtonType> option = alert.showAndWait();
-                if(option.get().equals(ButtonType.OK)){
-                    st = cnn.prepareStatement(updateData);
-                    st.executeUpdate();
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Successfully Updated!");
-                    alert.showAndWait();
-                    scheduleShowcase(query);
-                    clearschedulebtn();
-                }else{
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Cancelled");
-                    alert.showAndWait();
-                }
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
     }
     public void deleteschedulebtn(){
-        int scheduleid = sc_tbvSchedule.getSelectionModel().getSelectedIndex();
-        int offset = scheduleid + 1;
-        if(scheduleid != -1){
+        Schedule scheduleAnime = sc_tbvSchedule.getSelectionModel().getSelectedItem();
+        if(scheduleAnime != null){
+            int scheduleid = scheduleAnime.getSchedule_id();
             alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Are you sure you want to delete ?");
             Optional<ButtonType> option = alert.showAndWait();
             if (option.get().equals(ButtonType.OK)) {
-                String deleteData = "delete from Schedule where schedule_id = '" + offset + "'";
+                String deleteData = "delete from Schedule where schedule_id = '" + scheduleid + "'";
                 try {
                     st = cnn.prepareStatement(deleteData);
                     st.executeUpdate();

@@ -75,7 +75,7 @@ public class CardScheduleController implements Initializable {
             alert.showAndWait();
         }
         else{
-            String selected = "SELECT * FROM Schedule WHERE day = '" + cs_cbDay.getSelectionModel().getSelectedItem() + "'";
+            String selected = "SELECT * FROM Schedule WHERE day = '" + cs_cbDay.getSelectionModel().getSelectedItem() + "' and anime_id= '" + data.id + "'" ;
             try {
                 st = cnn.prepareStatement(selected);
                 rs = st.executeQuery();

@@ -130,7 +130,8 @@ public class PopupAnimeAdminController implements Initializable {
                 }
                 else if(dbDate.compareTo(currentDate) > 0){
                     pu_lblStatus.setText("Not yet aired");
-                }else if(rs.getInt("episodes") == rs.getInt("new_episode")){
+                }
+                if(dbDate.compareTo(currentDate) < 0 &&rs.getInt("episodes") == rs.getInt("new_episode")){
                     pu_lblStatus.setText("Finished Airing");
                 }
             }
